@@ -52,8 +52,7 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
+*.sym
 bootsect
-bootsect.sym
 final.img
 kernel
-kernel.sym
