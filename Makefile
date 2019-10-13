@@ -84,7 +84,8 @@ endif
 debug-kernel: final.img
 	rm -rf hda.qcow2
 	cp -f hda.qcow2.bak hda.qcow2
-	qemu-system-i386 -fda final.img -boot a -hda hda.qcow2 -cpu 486 -m 4m -S -s &
+	# qemu-system-i386 -fda final.img -boot a -hda hda.qcow2 -cpu 486 -m 4m -S -s &
+	bochs -f bochsrc.bxrc -q &
 	${GDB} kernel.sym \
 		-ex 'target remote localhost:1234' \
 		-ex 'set architecture i8086' \
@@ -96,7 +97,8 @@ debug-kernel: final.img
 debug-boot: final.img
 	rm -rf hda.qcow2
 	cp -f hda.qcow2.bak hda.qcow2
-	qemu-system-i386 -fda final.img -boot a -hda hda.qcow2 -cpu 486 -m 4m -S -s &
+	# qemu-system-i386 -fda final.img -boot a -hda hda.qcow2 -cpu 486 -m 4m -S -s &
+	bochs -f bochsrc.bxrc -q &
 	${GDB} bootsect.sym \
 		-ex 'target remote localhost:1234' \
 		-ex 'set architecture i8086' \

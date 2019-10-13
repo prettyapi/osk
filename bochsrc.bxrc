@@ -1,0 +1,12 @@
+megs: 32
+romimage: file=/opt/bochs/share/bochs/BIOS-bochs-latest
+vgaromimage: file="/opt/bochs/share/bochs/VGABIOS-lgpl-latest"
+floppya: 1_44=final.img, status=inserted
+boot: a
+log: bochsout.txt
+mouse: enabled=0
+#clock: sync=realtime
+clock: sync=none, time0=local, rtc_sync=0
+cpu: ips=1000000
+# GDB Debugging Stub
+gdbstub: enabled=1, port=1234, text_base=0, data_base=0, bss_base=0
