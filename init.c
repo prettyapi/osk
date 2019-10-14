@@ -82,63 +82,63 @@ const char wheel[] = {'\\', '|', '/', '-'};
 void do_task1(void) {
   int i = 0;
   for (;;) {
-    //__asm__("movb	%%al,	0xb8000+160*24+4" ::"a"(wheel[i++ % 4]));
-    SLEEP(1000);
+    __asm__("movb	%%al,	0xb8000+160*24+4" ::"a"(wheel[i++ % 4]));
+    SLEEP(100);
   }
 }
 
 void do_task2(void) {
   int i = 0;
   for (;;) {
-    //__asm__("movb	%%al,	0xb8000+160*24+2" ::"a"(wheel[i++ % 4]));
-    SLEEP(1000);
+    __asm__("movb	%%al,	0xb8000+160*24+2" ::"a"(wheel[i++ % 4]));
+    SLEEP(100);
   }
 }
 void 
 init(void) {
 	int i = 0;
-	// struct TASK_STRUCT task1;
-	// struct TASK_STRUCT task2;
+	struct TASK_STRUCT task1;
+	struct TASK_STRUCT task2;
 
-	// idt_install();
-	// pic_install();
-	// kb_install();
-	// timer_install(100);
-	// set_tss((unsigned long long)&TASK0.tss);
-	// set_ldt((unsigned long long)&TASK0.ldt);
-	// __asm__ ("ltrw	%%ax\n\t"::"a"(TSS_SEL));
-	// __asm__ ("lldt	%%ax\n\t"::"a"(LDT_SEL));
+	idt_install();
+	pic_install();
+	kb_install();
+	timer_install(100);
+	set_tss((unsigned long long)&TASK0.tss);
+	set_ldt((unsigned long long)&TASK0.ldt);
+	__asm__ ("ltrw	%%ax\n\t"::"a"(TSS_SEL));
+	__asm__ ("lldt	%%ax\n\t"::"a"(LDT_SEL));
 
-	// kprintf(KPL_DUMP, "Verifing disk partition table....\n");
-	// verify_DPT();
-	// kprintf(KPL_DUMP, "Verifing file systes....\n");
-	// verify_fs();
-	// kprintf(KPL_DUMP, "Checking / directory....\n");
-	// verify_dir();
+	kprintf(KPL_DUMP, "Verifing disk partition table....\n");
+	verify_DPT();
+	kprintf(KPL_DUMP, "Verifing file systes....\n");
+	verify_fs();
+	kprintf(KPL_DUMP, "Checking / directory....\n");
+	verify_dir();
 
-	// sti();
-	// new_task(&task1,
-	// 		(unsigned int)task1_run, 
-	// 		(unsigned int)task1_stack0+sizeof task1_stack0,
-	// 		(unsigned int)task1_stack3+sizeof task1_stack3);
-	// new_task(&task2,
-	// 		(unsigned int)task2_run,
-	// 		(unsigned int)task2_stack0+sizeof task2_stack0,
-	// 		(unsigned int)task2_stack3+sizeof task2_stack3);
-	// __asm__ ("movl %%esp,%%eax\n\t" \
-	// 		 "pushl %%ecx\n\t" \
-	// 		 "pushl %%eax\n\t" \
-	// 		 "pushfl\n\t" \
-	// 		 "pushl %%ebx\n\t" \
-	// 		 "pushl $1f\n\t" \
-	// 		 "iret\n" \
-	// 		 "1:\tmovw %%cx,%%ds\n\t" \
-	// 		 "movw %%cx,%%es\n\t" \
-	// 		 "movw %%cx,%%fs\n\t" \
-	// 		 "movw %%cx,%%gs" \
-	// 		 ::"b"(USER_CODE_SEL),"c"(USER_DATA_SEL));
+	sti();
+	new_task(&task1,
+			(unsigned int)task1_run, 
+			(unsigned int)task1_stack0+sizeof task1_stack0,
+			(unsigned int)task1_stack3+sizeof task1_stack3);
+	new_task(&task2,
+			(unsigned int)task2_run,
+			(unsigned int)task2_stack0+sizeof task2_stack0,
+			(unsigned int)task2_stack3+sizeof task2_stack3);
+	__asm__ ("movl %%esp,%%eax\n\t" \
+			 "pushl %%ecx\n\t" \
+			 "pushl %%eax\n\t" \
+			 "pushfl\n\t" \
+			 "pushl %%ebx\n\t" \
+			 "pushl $1f\n\t" \
+			 "iret\n" \
+			 "1:\tmovw %%cx,%%ds\n\t" \
+			 "movw %%cx,%%es\n\t" \
+			 "movw %%cx,%%fs\n\t" \
+			 "movw %%cx,%%gs" \
+			 ::"b"(USER_CODE_SEL),"c"(USER_DATA_SEL));
   for (;;) {
     __asm__("movb	%%al,	0xb8000+160*24" ::"a"(wheel[i++ % 4]));
-    SLEEP(1000);
+    SLEEP(100);
   }
 }

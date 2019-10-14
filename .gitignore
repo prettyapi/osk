@@ -55,4 +55,7 @@ dkms.conf
 *.sym
 bootsect
 final.img
+hda.img
+hda.img.lock
 kernel
+bochsout.txt

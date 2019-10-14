@@ -3,10 +3,10 @@
 		.text
 		.globl	start
 		.include "kernel.inc"
-		.code16
+		.code16gcc
 start:
 		jmpl    $0x0,   $code
-gdt:   
+gdt:
 		.quad	0x0000000000000000 # null descriptor
 		.quad	0x00cf9a000000ffff # cs
 		.quad	0x00cf92000000ffff # ds
@@ -22,7 +22,7 @@ clear_screen:
 		movw 	%ax,	%ds
 		movw 	%ax,	%es
 		movb 	%ds:0x1,%ah
-		movb	0x20,	%al
+		movb	$0x20,	%al
 		xorw	%di,	%di
 		movw	$2000, %cx
 		rep

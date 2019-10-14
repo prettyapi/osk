@@ -67,9 +67,10 @@ dep:
 	mv tmp_make Makefile
 
 run: final.img
-	rm -rf hda.qcow2
-	cp -f hda.qcow2.bak hda.qcow2
-	qemu-system-i386 -fda final.img -boot a -hda hda.qcow2 -cpu 486 -m 16M
+	rm -rf hda.img hda.img.lock
+	cp -f hda.img.bak hda.img
+	# qemu-system-i386 -fda final.img -boot a -hda hda.img -cpu 486 -m 16M
+	bochs -f bochsrc.bxrc -q
 
 gdbinit:
 	echo "add-auto-load-safe-path .gdbinit" > $(HOME)/.gdbinit
@@ -82,23 +83,23 @@ else
 endif
 
 debug-kernel: final.img
-	rm -rf hda.qcow2
-	cp -f hda.qcow2.bak hda.qcow2
-	# qemu-system-i386 -fda final.img -boot a -hda hda.qcow2 -cpu 486 -m 4m -S -s &
-	bochs -f bochsrc.bxrc -q &
+	rm -rf hda.img hda.img.lock
+	cp -f hda.img.bak hda.img
+	# qemu-system-i386 -fda final.img -boot a -hda hda.img -cpu 486 -m 4m -S -s &
+	bochs -f bochsrc.bxrc.dbg -q &
 	${GDB} kernel.sym \
 		-ex 'target remote localhost:1234' \
-		-ex 'set architecture i8086' \
+		-ex 'set architecture i386' \
 		-ex 'layout src' \
 		-ex 'layout regs' \
 		-ex 'break pm_mode' \
 		-ex 'continue'
 
 debug-boot: final.img
-	rm -rf hda.qcow2
-	cp -f hda.qcow2.bak hda.qcow2
-	# qemu-system-i386 -fda final.img -boot a -hda hda.qcow2 -cpu 486 -m 4m -S -s &
-	bochs -f bochsrc.bxrc -q &
+	rm -rf hda.img hda.img.lock
+	cp -f hda.img.bak hda.img
+	# qemu-system-i386 -fda final.img -boot a -hda hda.img -cpu 486 -m 4m -S -s &
+	bochs -f bochsrc.bxrc.dbg -q &
 	${GDB} bootsect.sym \
 		-ex 'target remote localhost:1234' \
 		-ex 'set architecture i8086' \
